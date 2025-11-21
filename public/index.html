@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+  <h2>Safe Team Data - Real Time Upload</h2>
+
+  <form id="uploadForm">
+    <input id="msg" placeholder="Message" required>
+    <input id="img" type="file" required>
+    <button>Upload</button>
+  </form>
+
+  <hr>
+  <div id="feed"></div>
+
+  <script>
+    const socket = io();
+
+    uploadForm.onsubmit = async (e) => {
+      e.preventDefault();
+
+      let f = new FormData();
+      f.append("message", msg.value);
+      f.append("image", img.files[0]);
+
+      await fetch("/upload", { method: "POST", body: f });
+    };
+
+    socket.on("newPost", (post) => {
+      feed.innerHTML =
+        `<p>${post.message}</p><img src="${post.image}" width="200"><hr>` +
+        feed.innerHTML;
+    });
+  </script>
+
+</body>
+</html>

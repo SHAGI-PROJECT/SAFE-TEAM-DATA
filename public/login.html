@@ -1,31 +1,83 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <title>Login - Neon</title>
+
+  <style>
+    body {
+      background: black;
+      color: #0ff;
+      text-align: center;
+      padding-top: 80px;
+      font-family: Poppins, sans-serif;
+    }
+
+    .box {
+      border: 1px solid #0ff;
+      width: 350px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 30px #0ff;
+      background: rgba(0,0,0,0.3);
+    }
+
+    input, button {
+      width: 250px;
+      margin: 10px;
+      padding: 12px;
+      border-radius: 5px;
+      font-size: 16px;
+      background: black;
+      border: 1px solid #0ff;
+      color: #0ff;
+      box-shadow: 0 0 10px #0ff;
+    }
+
+    button:hover {
+      background: #0ff;
+      color: black;
+      cursor: pointer;
+      box-shadow: 0 0 20px #0ff;
+    }
+
+    h2 {
+      text-shadow: 0 0 20px #0ff;
+    }
+  </style>
+</head>
+
 <body>
-  <h2>Login</h2>
+
+<div class="box">
+  <h2>LOGIN ⚡ NEON</h2>
 
   <form id="login">
     <input id="u" placeholder="Username" required><br>
     <input id="p" type="password" placeholder="Password" required><br>
-    <button>Login</button>
+    <button>LOGIN</button>
   </form>
+</div>
 
-  <script>
-    document.getElementById("login").onsubmit = async (e) => {
-      e.preventDefault();
 
-      const res = await fetch("/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: u.value,
-          password: p.value
-        })
-      });
+<script>
+  document.getElementById("login").onsubmit = async (e) => {
+    e.preventDefault();
 
-      const data = await res.json();
-      if (data.success) window.location = "/index.html";
-      else alert("Login Failed!");
-    };
-  </script>
+    const res = await fetch("/login", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        username: u.value,
+        password: p.value
+      })
+    });
+
+    const data = await res.json();
+    if (data.success) window.location = "/index.html";
+    else alert("Invalid Login!");
+  };
+</script>
+
 </body>
 </html>

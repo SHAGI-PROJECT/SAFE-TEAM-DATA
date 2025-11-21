@@ -1,40 +1,113 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>Safe Team Data - Neon UI</title>
   <script src="/socket.io/socket.io.js"></script>
+
+  <style>
+    body {
+      background: #030303;
+      font-family: 'Poppins', sans-serif;
+      color: #0ff;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #0ff;
+      text-shadow: 0 0 20px #0ff;
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+
+    #uploadForm {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid #0ff;
+      border-radius: 10px;
+      padding: 20px;
+      display: inline-block;
+      box-shadow: 0 0 30px #0ff;
+    }
+
+    input, button {
+      margin: 10px;
+      padding: 12px;
+      width: 250px;
+      background: black;
+      border: 1px solid #0ff;
+      color: #0ff;
+      font-size: 16px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px #0ff;
+    }
+
+    button:hover {
+      background: #0ff;
+      color: black;
+      cursor: pointer;
+      box-shadow: 0 0 20px #0ff;
+    }
+
+    #feed {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .postBox {
+      background: rgba(0, 255, 255, 0.05);
+      border: 1px solid #0ff;
+      margin-bottom: 25px;
+      padding: 15px;
+      width: 60%;
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #0ff;
+    }
+
+    img {
+      border: 2px solid #0ff;
+      border-radius: 10px;
+      width: 280px;
+      box-shadow: 0 0 25px #0ff;
+    }
+  </style>
+
 </head>
 
 <body>
-  <h2>Safe Team Data - Real Time Upload</h2>
 
-  <form id="uploadForm">
-    <input id="msg" placeholder="Message" required>
-    <input id="img" type="file" required>
-    <button>Upload</button>
-  </form>
+<h1>SAFE TEAM DATA ⚡</h1>
 
-  <hr>
-  <div id="feed"></div>
+<form id="uploadForm">
+  <input id="msg" placeholder="Enter message..." required>
+  <input id="img" type="file" required>
+  <button>UPLOAD</button>
+</form>
 
-  <script>
-    const socket = io();
+<div id="feed"></div>
 
-    uploadForm.onsubmit = async (e) => {
-      e.preventDefault();
+<script>
+  const socket = io();
 
-      let f = new FormData();
-      f.append("message", msg.value);
-      f.append("image", img.files[0]);
+  uploadForm.onsubmit = async (e) => {
+    e.preventDefault();
 
-      await fetch("/upload", { method: "POST", body: f });
-    };
+    let f = new FormData();
+    f.append("message", msg.value);
+    f.append("image", img.files[0]);
 
-    socket.on("newPost", (post) => {
-      feed.innerHTML =
-        `<p>${post.message}</p><img src="${post.image}" width="200"><hr>` +
-        feed.innerHTML;
-    });
-  </script>
+    await fetch("/upload", { method: "POST", body: f });
+  };
+
+  socket.on("newPost", (post) => {
+    feed.innerHTML =
+      `<div class="postBox">
+          <h3>${post.message}</h3>
+          <img src="${post.image}">
+        </div>` + feed.innerHTML;
+  });
+</script>
 
 </body>
 </html>
